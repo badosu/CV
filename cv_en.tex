@@ -1,82 +1,239 @@
-\documentclass[11pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[10pt]{article}
+
 \usepackage[utf8]{inputenc}
-\usepackage[brazil]{babel}
-\usepackage{hyperref}
-\usepackage{textcomp}
-\voffset=-1.2in
-\hoffset=-0.9in
-\setlength{\textheight}{10.750in}
-\setlength{\textwidth}{7.1in}
-\baselineskip=1in
+
+% The automated optical recognition software used to digitize resume
+% information works best with fonts that do not have serifs. This
+% command uses a sans serif font throughout. Uncomment both lines (or at
+% least the second) to restore a Roman font (i.e., a font with serifs).
+\usepackage{times}
+\renewcommand{\familydefault}{\sfdefault}
+
+% The OCR software also has a hard time with italics. These commands get
+% rid of the two common ways to italicize text in LaTeX. Get rid of them
+% to turn italics back on.
+\renewcommand\emph[1]{#1}
+\renewcommand\textit[1]{#1}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+% Use these lines for A4-sized paper
+\usepackage[paper=a4paper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=30.5mm,    % Length of section titles
+            marginparsep=1.5mm,       % Space between titles and text
+            margin=25mm,              % 25mm margins
+            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+\usepackage[shortlabels]{enumitem}
+
+
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+
+%%%% PAGES 2--9 NUMBERING:
+%% These two lines put page number in upper-right corner of pages 2--end
+\rhead{Amadeus Folego da Silva~\arabic{page} of \protect\pageref*{LastPage}}   % +LP
+%\rhead{Pavlic, p.~\arabic{page}}                                 % -LP
+
+%% These lines put page number in bottom (center) of pages 2--end
+%\lfoot{\hspace{\footpageshift}%
+%       \parbox{4in}{\, \hfill %
+%                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%%                    \arabic{page}                               % -LP
+%                    \hfill \,}}
+%%%% END PAGE 2--9 NUMBERING
+
+%%%% PAGE 1 NUMBERING:
+\makeatletter
+\let\oldps@plain\ps@plain
+\renewcommand{\ps@plain}{\oldps@plain%
+\renewcommand{\@evenfoot}{\hfil %
+    p.~\arabic{page} of \protect\pageref*{LastPage} % +LP
+%    p.~\arabic{page}                               % -LP
+    \hfil}%
+\renewcommand{\@oddfoot}{\@evenfoot}}
+\makeatother
+%%%% END PAGE 1 NUMBERING
+
+% Finally, give us PDF bookmarks and colored links
+%
+% NOTE: Some OCR software might be negatively affected by hyperlinks. So
+%       most employers recommend the draft option here.
+%
+% (to enable hyperlinks and bookmarks, comment out ``draft'' line;
+%  to disable hyperlinks and bookmarks, uncomment ``draft'' line)
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue,
+            %draft
+            }
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\makeheading}[2][]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+             {\large \bfseries #2 \hfill #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+\renewcommand{\section}[1]{\pagebreak[3]%
+    \hyphenpenalty=10000%
+    \vspace{1.3\baselineskip}%
+    \phantomsection\addcontentsline{toc}{section}{#1}%
+    \noindent\llap{\scshape\smash{\parbox[t]{\marginparwidth}{\raggedright #1}}}%
+    \vspace{-\baselineskip}\par}
+
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt]}
+        {\end{itemize}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[3]}
+\newcommand{\halfblankline}{\quad\vspace{-0.5\baselineskip}\pagebreak[3]}
+
+% Uses hyperref to link github and twitter
+\newcommand\github[1]{\href{http://github.com/#1}{@#1}}
+\newcommand\twitter[1]{\href{http://twitter.com/#1}{@#1}}
+
+% For \url{SOME_URL}, links SOME_URL to the url SOME_URL
+\providecommand*\url[1]{\href{#1}{#1}}
+% Same as above, but pretty-prints SOME_URL in teletype fixed-width font
+\renewcommand*\url[1]{\href{#1}{\texttt{#1}}}
+
+% For \email{ADDRESS}, links ADDRESS to the url mailto:ADDRESS
+\providecommand*\email[1]{\href{mailto:#1}{#1}}
+% Same as above, but pretty-prints ADDRESS in teletype fixed-width font
+\renewcommand*\email[1]{\href{mailto:#1}{\texttt{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{document}
+
+\makeheading[Curriculum vitae]{Amadeus Folego}
+
+\vspace{1em}
 \begin{center}
- {\Large    AMADEUS FOLEGO DA SILVA}
-\\
-{\scriptsize 
-\textborn Mauá, SP, 23/12/1988 - Children: 1 - \textmarried \\
-Rua Aurora, 787, apto. 52, Centro. São Paulo - SP, 01209-001 \\
-(11) 33373372;  (11) 95543190;  amadeus.folego@gmail.com\\}
+
+  \hspace{-10em} {\Large AMADEUS FOLEGO DA SILVA}\\[.5em]
+  \hspace{-10em} {Born in Mauá, SP, 23/12/1988 - Single}\\
+  \hspace{-10em} {Aurora St. 787, ap. 52, São Paulo - SP, 01209-001}\\
+
 \end{center}
 
-\hspace{-.29in}
- {\bf  PROFILE }\\[.1in]
- \indent Versatile professional experienced in web development, specially using .Net and related technologies. \\
- \indent Developed systems ranging from analytical reports of large databases, construction of a MVP framework, indexing and text search engine to integration via OAuth to Twitter, Facebook and Yahoo...\\
- \indent Interested in anything related to Mathematics, Finance, Artificial Intelligence, Engineering and Hacking in general.\\
- \indent Familiarity with web related concepts and technologies such as Ajax, HTML5, Tableless Html, Graceful Degradation, web servers, web framework models (MVC, MVP, Templating) \textit{etc}.\\
- 
-\hspace{-.29in}
-	{\bf  EDUCATION }
- \begin{list}{name}{\labelwidth 18em \leftmargin 1.33in \itemsep -.025in }
-\item [\textbf{01/2010 - 12/2011}] {\bf Graduate in Mathematics} at Universidade Federal do ABC (expected)
-\item [\textbf{09/2006 - 12/2010}] {\textbf{Graduate in BC\&T} \emph{(Science \& Technology)}} at Universidade Federal do ABC
-\begin{itemize}
-\vspace{-.04in}
-\item  {\bf  Undergraduate Research:} {\em Dynamical Model of Magnetic Hysteresis Phenomena} \\\scriptsize Scribd : \url{http://www.scribd.com/doc/21709933} \normalsize
-\hspace{-.29in}
-\vspace{-.04in}
- \item {\bf  Advisor:} Pedro Sérgio Pereira Lima \\\scriptsize Lattes : \url{http://lattes.cnpq.br/3725976189075654} \normalsize
- \hspace{-.29in}
-\vspace{-.04in}
- \item {\bf  Teaching Assistant:} 
- \begin{itemize}
- \vspace{-.05in}
- \item  {\textit{FVV (Multivariable Calculus)} } 
- \vspace{-.05in}
- \item  {\textit{Cálculo Vetorial e Tensorial (Vectorial and Tensorial Calculus)}} 
- \end{itemize}
-\end{itemize} 
+\section{Contact Info}
 
-\item [\bf 01/2004 - 06/2005] {\bf Informatics Technical Course
-} at Escola Técnica Estadual Jorge Street
-\end{list}
+\newlength{\rcollength}\setlength{\rcollength}{2.5in}
 
-\hspace{-.29in}
- {\bf  PROFESSIONAL EXPERIENCE }
- \begin{list}{name}{\labelwidth 18em \leftmargin 1.33in \itemsep -.025in }
-\item [\bf 6/2010] {\textbf{Betboo}} Software Developer\\
-	\scriptsize \url{http://www.betboo.com} \normalsize\\
-	Development and mantaining of website.
-\item [\textbf{11/2009 - 6/2010}] {\textbf{Lumina1}} Software Developer \emph{Jr}\\
-	\scriptsize \url{http://www.lumina1.com.br} \normalsize\\
-	Development of Web Applications using .Net platform.
-\item [\textbf{12/2006 - 6/2007}] {\textbf{VIXIA do Brasil}} Software Developer \emph{Internship}\\
-	\scriptsize \url{http://www.vixia.com.br} \normalsize\\
-	Model, develop and integrate ECM applications using .Net platform and MS SQL Server.
-\end{list}
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+ Email: \email{amadeusfolego@gmail.com} & Phone: 55 11 9554-3190 \\
+ Github: \github{badosu} & Twitter: \twitter{badosu\_}\\
 
-\hspace{-.29in}
- {\bf  COMPUTER SKILLS }
- \begin{list}{name}{\labelwidth 18em \leftmargin 1.33in \itemsep -.025in }
-\item [\textbf{Development}] {.Net (VB, C\#), Java, Ruby, Python, Lua} 
-\item [\textbf{Web}] {Html, jQuery/ProcessingJS, CSS, Asp.Net, Publique!} 
-\item [\textbf{Versioning}] {GitHub, TFS} 
-\item [\textbf{Database}] {MySQL, MS SQL Server} 
-\item [\textbf{Search Engine}] {Lucene} 
-\item [\textbf{Graphic Framework}] {Processing} 
-\item [\textbf{OS}] {Windows, Mandriva, Ubuntu, FreeBSD} 
-\item [\textbf{Academic}] {Matlab, \LaTeXe, SciPy (NumPy, matplotlib)} 
-\end{list}
+\end{tabular}
 
-\hfill		
+\section{Profile}
+
+  Versatile professional, with experience developing for the web, using .Net and Ruby.
+  Interested in Math, Computer Science and {\em Math} in general.
+  Has familiarity, and good learning skills, for concepts and technologies which are relevant for the web.
+
+\section{Professional Experience}
+  \vspace{3em}
+  \begin{innerlist}{\labelwidth 18em \leftmargin 1.53in \itemsep -.025in }
+    \item [\textbf{01/2012}]{\textbf{Boo-box}~~~\scriptsize \url{http://boo-box.com} \normalsize}\\
+      Technology company, in which I got touch with high scale systems.
+    \item [\textbf{06/2010 - 11/2011}]{\textbf{Betboo}~~~\scriptsize \url{http://betboo.com} \normalsize}\\
+      Online gaming website, where I worked on projects related with expansion to other countries (Asia and Europe)
+    \item [\textbf{11/2009 - 06/2010}]{\textbf{Lumina1}}\\
+      Advertising Agency, where I started working with web.
+  \end{innerlist}
+
+\section{Interesting Projects}
+  \vspace{3em}
+  \begin{innerlist}{\labelwidth 1em \leftmargin 1.53in \itemsep -.025in }
+    \item{\textbf{Borel}~~~\scriptsize \url{http://rubydoc.info/gems/borel/} \normalsize}\\
+      Created this gem to solve problems using algorithms on comparable sets.
+    \item{\textbf{Audi Quattro for iPad}~~~\scriptsize \url{http://vimeo.com/36426085} \normalsize}\\
+      Developed a framework for mapping DOM elements into a bi-dimensional physics model using javascript and css-transforms extensively.
+    \item{\textbf{Liste$\chi$}~~~\scriptsize \url{http://listechi.com} \normalsize}\\
+      Project focused at the academic public. {\em (on development)}
+  \end{innerlist}
+
+\section{Academic Qualifications}
+  \vspace{3em}
+  \begin{innerlist}{\labelwidth 18em \leftmargin 1.13in \itemsep -.025in }
+    \item[\textbf{01/2010 - 12/2012}]
+      {\bf B.Sc. Mathematics} Universidade Federal do ABC (expected)
+    \item[\textbf{09/2006 - 12/2010}]
+      {\textbf{B.Sc. Science and Technology}} Universidade Federal do ABC
+      \begin{itemize}
+        \item Dynamic modelling of the Magnetic Hysteresis phenomenon\\
+          {\scriptsize Available at (pt-br): \url{http://www.scribd.com/doc/21709933}}
+        \item {\bf Teaching Assistant}
+          \begin{innerlist}
+            \item Multi-Variable Calculus.
+            \item Vectorial and Tensorial Calculus.
+          \end{innerlist}
+      \end{itemize}
+  \end{innerlist}
+
 \end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% End CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------%
+% The following is copyright and licensing information for
+% redistribution of this LaTeX source code; it also includes a liability
+% statement. If this source code is not being redistributed to others,
+% it may be omitted. It has no effect on the function of the above code.
+%----------------------------------------------------------------------%
+% Copyright (c) 2007, 2008, 2009, 2010, 2011 by Theodore P. Pavlic
+%
+% Unless otherwise expressly stated, this work is licensed under the
+% Creative Commons Attribution-Noncommercial 3.0 United States License. To
+% view a copy of this license, visit
+% http://creativecommons.org/licenses/by-nc/3.0/us/ or send a letter to
+% Creative Commons, 171 Second Street, Suite 300, San Francisco,
+% California, 94105, USA.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+% OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+% CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+% TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%----------------------------------------------------------------------%
